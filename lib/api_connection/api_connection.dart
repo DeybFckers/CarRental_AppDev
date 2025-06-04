@@ -24,4 +24,5 @@ class API
 
   //caravailable
   static const carAvailable = "$hostConnect/cars/carAvailability.php";
+
 }

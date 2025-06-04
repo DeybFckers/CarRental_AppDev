@@ -24,26 +24,73 @@ class CarDetailPage extends StatefulWidget {
 class _CarDetailPageState extends State<CarDetailPage> {
   DateTime? preferredStartDate;
   DateTime? preferredEndDate;
+  List<DateTime>blockedDates = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchBlockedDates();
+  }
+
+
+  fetchBlockedDates() async {
+    var res = await http.post(
+      Uri.parse(API.carAvailable),
+      body: {'Car_Id': widget.car.carId.toString()},
+    );
+
+    if (res.statusCode == 200) {
+      final decoded = jsonDecode(res.body);
+
+      // If response is directly a map of index: date
+      if (decoded is List) {
+        setState(() {
+          blockedDates = decoded
+              .map<DateTime>((dateStr) => DateTime.parse(dateStr))
+              .toList();
+        });
+      } else {
+        print("Unexpected JSON structure: ${res.body}");
+      }
+    }
+  }
+
+
+  bool isDateBlocked(DateTime day) {
+    String dayStr = day.toIso8601String().split('T')[0];
+    return blockedDates.any((blockedDay) => blockedDay.toIso8601String()
+        .split('T')[0] == dayStr);
+  }
 
 
   //StartDatePicker Function
-  Future<void> pickStartDate() async{
+  Future<void> pickStartDate() async {
+    DateTime today = DateTime.now();
+    DateTime initial = preferredStartDate ?? today;
+
+    // find the next available date starting from today
+    while (isDateBlocked(initial)) {
+      initial = initial.add(Duration(days: 1));
+    }
+
     final picked = await showDatePicker(
       context: context,
-      initialDate: preferredStartDate ?? DateTime.now(),
-      firstDate: DateTime.now(),
+      initialDate: initial,
+      firstDate: today,
       lastDate: DateTime(2100),
+      selectableDayPredicate: (day) => !isDateBlocked(day),
     );
-    //unclickabledatepicker
-    if(picked != null){
+
+    if (picked != null) {
       setState(() {
         preferredStartDate = picked;
-        if (preferredEndDate != null && preferredEndDate!.isBefore(picked)){
+        if (preferredEndDate != null && preferredEndDate!.isBefore(picked)) {
           preferredEndDate = null;
         }
       });
     }
   }
+
   //EndDatePicker Function
   Future<void>pickEndDate() async {
     final picked = await showDatePicker(
@@ -52,6 +99,10 @@ class _CarDetailPageState extends State<CarDetailPage> {
             (preferredStartDate ?? DateTime.now()).add(Duration(days: 1)),
         firstDate: preferredStartDate ?? DateTime.now(),
         lastDate: DateTime(2100),
+      selectableDayPredicate: (day) {
+          if(preferredStartDate == null) return false;
+          return !isDateBlocked(day) && !day.isBefore(preferredStartDate!);
+      }
     );
     //unclickabledatepicker
     if (picked !=null) {
@@ -86,8 +137,6 @@ class _CarDetailPageState extends State<CarDetailPage> {
 
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -259,9 +308,9 @@ class _CarDetailPageState extends State<CarDetailPage> {
                 onPressed: (preferredStartDate != null &&
                     preferredEndDate != null)
                     ? () {
-                      BookingRequestRecord();
-                    }
-                  :null,
+                  BookingRequestRecord();
+                }
+                    :null,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.yellow[900],
                 ),
