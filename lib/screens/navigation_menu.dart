@@ -1,6 +1,6 @@
 import 'package:CarRentals/screens/BookingStatusScreen.dart';
 import 'package:CarRentals/screens/home.dart';
-import 'package:CarRentals/screens/inbox.dart';
+import 'package:CarRentals/screens/inbox.dart';  // make sure this matches your file name
 import 'package:CarRentals/screens/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
@@ -8,11 +8,9 @@ import 'package:get/get.dart';
 import 'package:CarRentals/api_connection/LoggedInUser.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-
 class NavigationMenu extends StatelessWidget {
   final LoggedInUser user;
   const NavigationMenu({super.key, required this.user});
-
 
   @override
   Widget build(BuildContext context) {
@@ -23,12 +21,10 @@ class NavigationMenu extends StatelessWidget {
           height: 80,
           elevation: 0,
           selectedIndex: controller.selectedIndex.value,
-          onDestinationSelected: (index) => controller.selectedIndex.value =
-              index,
+          onDestinationSelected: (index) => controller.selectedIndex.value = index,
           destinations: const [
             NavigationDestination(icon: Icon(Iconsax.home), label: 'Home'),
-            NavigationDestination(icon: Icon(FontAwesomeIcons.fileInvoice), label:
-            'Booking Status'),
+            NavigationDestination(icon: Icon(FontAwesomeIcons.fileInvoice), label: 'Booking Status'),
             NavigationDestination(icon: Icon(Iconsax.message), label: 'Inbox'),
             NavigationDestination(icon: Icon(Iconsax.user), label: 'Profile'),
           ],
@@ -39,14 +35,17 @@ class NavigationMenu extends StatelessWidget {
   }
 }
 
-class NavigationController extends GetxController{
+class NavigationController extends GetxController {
   final Rx<int> selectedIndex = 0.obs;
   final LoggedInUser user;
 
-
   NavigationController(this.user);
 
-  late final screens = [ HomeScreen(user: user), BookingStatusScreen(user:
-  user),
-    const InboxScreen(), const ProfileScreen()];
+  late final screens = [
+    HomeScreen(user: user),
+    BookingStatusScreen(user: user),
+    InboxScreen(user: user), // Pass user here
+    ProfileScreen(user: user),
+
+  ];
 }
