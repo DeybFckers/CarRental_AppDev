@@ -3,10 +3,11 @@ class API
   static const hostConnect = "http://192.168.1.45/carrentalbackend_php";
   static const hostConnectUser = "$hostConnect/user";
 
-  //signUp user
+  //signUp/login user
   static const signUp = "$hostConnect/user/signup.php";
   static const validateEmail = "$hostConnect/user/validate_email.php";
   static const login = "$hostConnect/user/login.php";
+  static const Ownerlogin = "$hostConnect/user/loginowner.php";
 
   //cars
   static const getcars = "$hostConnect/cars/get_cars.php";

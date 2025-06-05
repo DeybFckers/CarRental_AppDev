@@ -1,4 +1,5 @@
 import 'package:CarRentals/api_connection/LoggedInUser.dart';
+import 'package:CarRentals/ownerScreen/OwnerNavigation.dart';
 import 'package:CarRentals/screens/navigation_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:CarRentals/consts/ReuseableClass.dart';
@@ -8,6 +9,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:CarRentals/api_connection/api_connection.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:CarRentals/api_connection/LoggedInOwner.dart';
+
 
 
 
@@ -25,6 +28,7 @@ class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  String selectedUserType = 'Customer';
 
   loginUserNow() async {
     var res = await http.post(
@@ -40,6 +44,28 @@ class _LoginPageState extends State<LoginPage> {
         LoggedInUser loggedinUser = LoggedInUser.fromJson(resBodyOfLogin["userData"]);
 
         Get.off(() => NavigationMenu(user: loggedinUser));
+      }
+      else{
+        Fluttertoast.showToast(msg: "Incorrect Credentials. Please write correct password or email, Try Again.");
+      }
+    }
+  }
+
+  loginOwnerNow() async {
+    var res = await http.post(
+        Uri.parse(API.Ownerlogin),
+        body: {
+          "Owner_Email": emailController.text.trim(),
+          "Owner_Password": passwordController.text.trim(),
+        }
+    );
+    if(res.statusCode == 200){
+      var resBodyOfOwnerLogin = jsonDecode(res.body);
+      if(resBodyOfOwnerLogin['Success'] == true){
+        LoggedInOwner loggedinOwner = LoggedInOwner.fromJson
+          (resBodyOfOwnerLogin["userData"]);
+
+        Get.off(() => OwnerNavigation(owneruser: loggedinOwner));
       }
       else{
         Fluttertoast.showToast(msg: "Incorrect Credentials. Please write correct password or email, Try Again.");
@@ -81,20 +107,36 @@ class _LoginPageState extends State<LoginPage> {
                   isPasswordText: true,
               ),
               SizedBox(height: 20,),
+              DropdownButton<String>(
+                value: selectedUserType,
+                items: ['Customer', 'Owner'].map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  if (value != null) {
+                    setState(() {
+                      selectedUserType = value;
+                    });
+                  }
+                },
+              ),
+              SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-
-                  loginUserNow();
+                  if (selectedUserType == 'Customer') {
+                    loginUserNow();
+                  } else {
+                    loginOwnerNow();
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.yellow[900],
-                    fixedSize: Size(410, 55)
-                ),
+                    fixedSize: Size(410, 55)),
                 child: Text('Sign In',
-                    style: TextStyle(
-                        fontSize: 25,
-                        color: Colors.white)
-                ),
+                    style: TextStyle(fontSize: 25, color: Colors.white)),
               ),
               SizedBox(height: 20,),
               GestureDetector(
