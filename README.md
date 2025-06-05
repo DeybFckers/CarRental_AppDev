@@ -1,4 +1,4 @@
-# barbershopbooking
+# CarRental
 
 A new Flutter project.
 
