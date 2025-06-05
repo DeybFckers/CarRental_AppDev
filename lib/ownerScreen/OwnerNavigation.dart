@@ -1,12 +1,15 @@
 import 'package:CarRentals/ownerScreen/OwnerInbox.dart';
+import 'package:CarRentals/ownerScreen/OwnerProfile.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:CarRentals/api_connection/LoggedInOwner.dart';
 
 
+
 class OwnerNavigation extends StatelessWidget {
   final LoggedInOwner owneruser;
+
   const OwnerNavigation({super.key, required this.owneruser});
 
   @override
@@ -38,10 +41,12 @@ class NavigationController extends GetxController{
   final Rx<int> selectedIndex = 0.obs;
   final LoggedInOwner owneruser;
 
+
   NavigationController(this.owneruser);
 
-  late final screens = [OwnerInbox(owneruser: owneruser), Container(color:
-  Colors.purple), Container(color: Colors.orange)
+  late final screens = [OwnerInbox(owneruser: owneruser), Container
+    (color:
+  Colors.purple), OwnerProfileScreen(owneruser: owneruser)
   ];
 }
 

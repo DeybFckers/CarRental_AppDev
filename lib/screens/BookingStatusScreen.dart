@@ -1,5 +1,4 @@
 import 'package:CarRentals/Details/BookingDetailsPage.dart';
-import 'package:CarRentals/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -93,13 +92,24 @@ class BookingStatusScreen extends StatelessWidget {
                       ),
                     );
                   },
-                  child: ListTile(
-                    title: Text('${booking.brand} ${booking.model}'),
-                    subtitle: Text(
-                      'From ${booking.preferredStartDate} to ${booking.preferredEndDate}',
-                    ),
-                    trailing: Text(booking.requestStatus),
-                  ),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: ListTile(
+                        title: Text('${booking.brand} ${booking.model}',
+                          style: TextStyle(color: Colors.white, fontWeight:
+                          FontWeight.bold),
+                        ),
+                        subtitle: Text(
+                          'From ${booking.preferredStartDate} to ${booking
+                              .preferredEndDate}',
+                        ),
+                        trailing: Text(booking.requestStatus,
+                          style: TextStyle(color: Colors.grey, fontSize: 12),
+                        ),
+                      ),
+                    )
                 );
               },
             );
