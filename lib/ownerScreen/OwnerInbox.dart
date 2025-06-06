@@ -1,4 +1,5 @@
 import 'package:CarRentals/Details/OwnerBookingDetails.dart';
+import 'package:CarRentals/Details/OwnerStatus.dart';
 import 'package:CarRentals/Details/OwnerOnGoing.dart';
 import 'package:CarRentals/api_connection/LoggedInOwner.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class OwnerInbox extends StatelessWidget {
   @override
   Widget build(BuildContext context){
     return DefaultTabController(
-      length: 2,
+      length: 4,
       child: Scaffold(
         appBar: AppBar(
           title: Text('Your Bookings'),
@@ -25,6 +26,8 @@ class OwnerInbox extends StatelessWidget {
             tabs: [
               Tab(text: 'Pending'),
               Tab(text: 'Ongoing'),
+              Tab(text: 'Completed'),
+              Tab(text: 'Cancelled')
             ],
           ),
         ),
@@ -32,6 +35,8 @@ class OwnerInbox extends StatelessWidget {
           children: [
             PendingTab(owneruser: owneruser),
             OnGoingTab(owneruser: owneruser),
+            CompletedTab(owneruser: owneruser),
+            CancelledTab(owneruser: owneruser)
           ],
         ),
       ),
@@ -187,6 +192,184 @@ class OnGoingTab extends StatelessWidget{
                         context,
                         MaterialPageRoute(
                           builder: (_) => OwnerOnGoing(booking: booking,
+                              owneruser: owneruser),
+                        ),
+                      );
+                    },
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: ListTile(
+                        title: Text('${booking.brand} ${booking.model}',
+                          style: TextStyle(color: Colors.white, fontWeight:
+                          FontWeight.bold),
+                        ),
+                        subtitle: Text(
+                          'From ${booking.preferredStartDate} to ${booking
+                              .preferredEndDate}',
+                        ),
+                        trailing: Text(booking.rentalStatus,
+                          style: TextStyle(color: Colors.grey, fontSize: 12),
+                        ),
+                      ),
+                    )
+                );
+              },
+            );
+          },
+        )
+    );
+  }
+}
+
+//completedstatus
+class CompletedTab extends StatelessWidget{
+  final LoggedInOwner owneruser;
+  const CompletedTab({super.key, required this.owneruser});
+
+  Future<List<BookingDetails>> fetchBookings() async{
+    final response = await http.get(Uri.parse(API.getbookingdetails));
+
+    if(response.statusCode == 200){
+      List<dynamic> jsonData = jsonDecode(response.body);
+      return jsonData
+          .map((item)=>BookingDetails.fromJson(item))
+          .where((booking) => booking.ownerName == owneruser.Owner_Name &&
+          booking.rentalStatus == 'Completed')
+          .toList();
+    }else{
+      return [];
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: FutureBuilder<List<BookingDetails>>(
+          future: fetchBookings(),
+          builder: (context, snapshot) {
+            if(snapshot.connectionState == ConnectionState.waiting){
+              return Center(child: CircularProgressIndicator());
+            }else if (snapshot.hasError){
+              return Center(child: Text('Error: ${snapshot.error}'));
+            }
+
+            final bookings =snapshot.data!;
+            if (bookings.isEmpty){
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'No Bookings found.',
+                      style: TextStyle(fontSize: 20, color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            return ListView.builder(
+              itemCount: bookings.length,
+              itemBuilder: (context, index) {
+                final booking = bookings[index];
+                return InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => OwnerStatus(booking: booking,
+                              owneruser: owneruser),
+                        ),
+                      );
+                    },
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: ListTile(
+                        title: Text('${booking.brand} ${booking.model}',
+                          style: TextStyle(color: Colors.white, fontWeight:
+                          FontWeight.bold),
+                        ),
+                        subtitle: Text(
+                          'From ${booking.preferredStartDate} to ${booking
+                              .preferredEndDate}',
+                        ),
+                        trailing: Text(booking.rentalStatus,
+                          style: TextStyle(color: Colors.grey, fontSize: 12),
+                        ),
+                      ),
+                    )
+                );
+              },
+            );
+          },
+        )
+    );
+  }
+}
+
+//cancelledstatus
+class CancelledTab extends StatelessWidget{
+  final LoggedInOwner owneruser;
+  const CancelledTab({super.key, required this.owneruser});
+
+  Future<List<BookingDetails>> fetchBookings() async{
+    final response = await http.get(Uri.parse(API.getbookingdetails));
+
+    if(response.statusCode == 200){
+      List<dynamic> jsonData = jsonDecode(response.body);
+      return jsonData
+          .map((item)=>BookingDetails.fromJson(item))
+          .where((booking) => booking.ownerName == owneruser.Owner_Name &&
+          booking.rentalStatus == 'Cancelled')
+          .toList();
+    }else{
+      return [];
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: FutureBuilder<List<BookingDetails>>(
+          future: fetchBookings(),
+          builder: (context, snapshot) {
+            if(snapshot.connectionState == ConnectionState.waiting){
+              return Center(child: CircularProgressIndicator());
+            }else if (snapshot.hasError){
+              return Center(child: Text('Error: ${snapshot.error}'));
+            }
+
+            final bookings =snapshot.data!;
+            if (bookings.isEmpty){
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'No Bookings found.',
+                      style: TextStyle(fontSize: 20, color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            return ListView.builder(
+              itemCount: bookings.length,
+              itemBuilder: (context, index) {
+                final booking = bookings[index];
+                return InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => OwnerStatus(booking: booking,
                               owneruser: owneruser),
                         ),
                       );
