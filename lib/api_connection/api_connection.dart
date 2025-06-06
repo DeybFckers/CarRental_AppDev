@@ -23,6 +23,7 @@ class API
   //rental
   static const cancelRental = "$hostConnect/rental/rental_cancel.php";
   static const approvedRental = "$hostConnect/rental/rental_confirm.php";
+  static const completedRental = "$hostConnect/rental/rental_completed.php";
 
   //caravailable
   static const carAvailable = "$hostConnect/cars/carAvailability.php";

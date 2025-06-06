@@ -1,10 +1,9 @@
-import 'package:CarRentals/successScreens/OwnerAcceptSuccess.dart';
-import 'package:CarRentals/successScreens/OwnerCancelSuccess.dart';
+import 'package:CarRentals/successScreens/OwnerDoneSuccess.dart';
 import 'package:flutter/material.dart';
 import 'package:CarRentals/api_connection/LoggedInOwner.dart';
 import 'package:http/http.dart' as http;
 import 'package:CarRentals/api_connection/BookingDetails.dart';
-import 'package:CarRentals/api_connection/getRental.dart';
+import 'package:CarRentals/api_connection/completeRental.dart';
 import 'package:CarRentals/api_connection/api_connection.dart';
 import 'dart:convert';
 import 'package:get/get.dart';
@@ -12,20 +11,20 @@ import 'package:iconsax/iconsax.dart';
 import 'package:CarRentals/consts/ReuseableClass.dart';
 
 
-class OwnerBookingDetails extends StatefulWidget {
+class OwnerOnGoing extends StatefulWidget {
   final LoggedInOwner owneruser;
   final BookingDetails booking;
 
-  const OwnerBookingDetails({super.key, required this.owneruser, required
+  const OwnerOnGoing({super.key, required this.owneruser, required
   this.booking});
 
   @override
-  State<OwnerBookingDetails> createState() => _OwnerBookingDetailsState();
+  State<OwnerOnGoing> createState() => _OwnerOnGoingState();
 }
 
-class _OwnerBookingDetailsState extends State<OwnerBookingDetails> {
+class _OwnerOnGoingState extends State<OwnerOnGoing> {
 
-  Future<void> cancelBooking() async{
+  Future<void> completedBooking() async{
     final booking = widget.booking;
 
     DateTime startDate = DateTime.parse(booking.preferredStartDate);
@@ -34,62 +33,25 @@ class _OwnerBookingDetailsState extends State<OwnerBookingDetails> {
 
     double totalPrice = booking.dailyRate * days;
 
-    RentalCancel rentalCancel = RentalCancel(
+    RentalComplete rentalComplete = RentalComplete(
+      rentalID: booking.rentalID,
       customerID: booking.customerID,
       carID: booking.carId,
       startDate: booking.preferredStartDate,
       endDate: booking.preferredEndDate,
       totalPrice: totalPrice,
-      rentalStatus: "Cancelled",
+      rentalStatus: "Completed",
     );
 
     try{
       var res = await http.post(
-        Uri.parse(API.cancelRental),
-        body: rentalCancel.toJson(),
+        Uri.parse(API.completedRental),
+        body: rentalComplete.toJson(),
       );
       if(res.statusCode == 200){
         var resBodyOfCancel = jsonDecode(res.body);
         if(resBodyOfCancel['Success'] == true){
-          Get.off(() => OwnerCancelSuccess(owneruser: widget.owneruser,
-              booking: booking));
-        } else {
-
-        }
-      }
-    }catch(e){
-
-    }
-
-  }
-
-  Future<void> approvedBooking() async{
-    final booking = widget.booking;
-
-    DateTime startDate = DateTime.parse(booking.preferredStartDate);
-    DateTime endDate = DateTime.parse(booking.preferredEndDate);
-    int days = endDate.difference(startDate).inDays + 1;
-
-    double totalPrice = booking.dailyRate * days;
-
-    RentalCancel rentalCancel = RentalCancel(
-      customerID: booking.customerID,
-      carID: booking.carId,
-      startDate: booking.preferredStartDate,
-      endDate: booking.preferredEndDate,
-      totalPrice: totalPrice,
-      rentalStatus: "Confirmed",
-    );
-
-    try{
-      var res = await http.post(
-        Uri.parse(API.approvedRental),
-        body: rentalCancel.toJson(),
-      );
-      if(res.statusCode == 200){
-        var resBodyOfCancel = jsonDecode(res.body);
-        if(resBodyOfCancel['Success'] == true){
-          Get.off(() => OwnerAcceptSuccess(owneruser: widget.owneruser,
+          Get.off(() => OwnerDoneSuccess(owneruser: widget.owneruser,
               booking: booking));
         } else {
 
@@ -158,42 +120,21 @@ class _OwnerBookingDetailsState extends State<OwnerBookingDetails> {
                 content: '${booking.requestStatus}'
             ),
             SizedBox(height: 20),
-            Row(
-              children: [
-                ElevatedButton(
-                    onPressed: () {
-                      cancelBooking();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      fixedSize: Size(185, 55),
-                    ),
-                    child: Text(
-                      'Cancel',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.black,
-                      ),
-                    )
+            ElevatedButton(
+                onPressed: () {
+                  completedBooking();
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.yellow[900],
+                  fixedSize: Size(410, 55),
                 ),
-                SizedBox(width: 20),
-                ElevatedButton(
-                    onPressed: () {
-                      approvedBooking();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.yellow[900],
-                      fixedSize: Size(185,55),
-                    ),
-                    child: Text(
-                      'Confirm',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white
-                      )
-                  )
-                ),
-              ],
+                child: Text(
+                  'Done',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                  ),
+                )
             ),
             SizedBox(height: 20),
           ],

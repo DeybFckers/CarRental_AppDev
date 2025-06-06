@@ -14,6 +14,7 @@ class BookingDetails {
   final int customerID;
   final String rentalStatus;
   final double totalPrice;
+  final int rentalID;
 
   BookingDetails({
     required this.customerName,
@@ -30,11 +31,14 @@ class BookingDetails {
     required this.carId,
     required this.customerID,
     required this.rentalStatus,
-    required this.totalPrice
+    required this.totalPrice,
+    required this.rentalID
   });
 
   factory BookingDetails.fromJson(Map<String, dynamic> json) {
     return BookingDetails(
+      rentalID: json['Rental_Id'] == null ? 0 : int.parse(json['Rental_Id']
+          .toString()),
       totalPrice: json['TotalPrice'] == null ? 0.0 : double.parse(json['TotalPrice'].toString()),
       carId: json['Car_ID'] == null ? 0 : int.parse(json['Car_ID'].toString()),
       customerName: json['Customer_Name'] ?? '',
