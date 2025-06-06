@@ -11,6 +11,7 @@ class BookingDetails {
   final String ownerName;
   final double dailyRate;
   final int carId;
+  final int customerID;
 
   BookingDetails({
     required this.customerName,
@@ -25,6 +26,7 @@ class BookingDetails {
     required this.ownerName,
     required this.dailyRate,
     required this.carId,
+    required this.customerID
   });
 
   factory BookingDetails.fromJson(Map<String, dynamic> json) {
@@ -41,6 +43,7 @@ class BookingDetails {
       imageUrl: json['ImageURL'],
       ownerName: json['Owner_Name'],
       dailyRate: double.parse(json['DailyRate']),
+      customerID: int.parse(json['Customer_ID']),
     );
   }
 }

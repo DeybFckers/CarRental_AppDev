@@ -1,6 +1,6 @@
 import 'package:CarRentals/screens/BookingStatusScreen.dart';
 import 'package:CarRentals/screens/home.dart';
-import 'package:CarRentals/screens/inbox.dart';  // make sure this matches your file name
+import 'package:CarRentals/screens/Messages.dart';  // make sure this matches your file name
 import 'package:CarRentals/screens/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
@@ -44,7 +44,7 @@ class NavigationController extends GetxController {
   late final screens = [
     HomeScreen(user: user),
     BookingStatusScreen(user: user),
-    InboxScreen(user: user), // Pass user here
+    //MessageScreen(user: user), // Pass user here
     ProfileScreen(user: user),
 
   ];

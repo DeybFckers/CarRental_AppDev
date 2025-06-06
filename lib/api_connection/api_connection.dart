@@ -20,10 +20,16 @@ class API
   static const getbookingdetails = "$hostConnect/bookingrequest/details_booki"
       "ng.php";
 
-  //rentalCancellation
-  static const cancelRental = "$hostConnect/cancellation/rental_cancel.php";
+  //rental
+  static const cancelRental = "$hostConnect/rental/rental_cancel.php";
+  static const approvedRental = "$hostConnect/rental/rental_confirm.php";
 
   //caravailable
   static const carAvailable = "$hostConnect/cars/carAvailability.php";
+
+  //messages
+  static const getConversation = "$hostConnect/messages/getconversation.php";
+  static const getMessage = "$hostConnect/messages/getmessages.php";
+  static const sendMessage = "$hostConnect/messages/sendmessage.php";
 
 }

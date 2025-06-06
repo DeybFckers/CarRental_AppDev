@@ -14,7 +14,7 @@ class OwnerNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(NavigationController(owneruser));
+    final controller = Get.put(OwnerNavigationController(owneruser));
     return Scaffold(
       bottomNavigationBar: Obx(
           () => NavigationBar(
@@ -37,12 +37,12 @@ class OwnerNavigation extends StatelessWidget {
   }
 }
 
-class NavigationController extends GetxController{
+class OwnerNavigationController extends GetxController{
   final Rx<int> selectedIndex = 0.obs;
   final LoggedInOwner owneruser;
 
 
-  NavigationController(this.owneruser);
+  OwnerNavigationController(this.owneruser);
 
   late final screens = [OwnerInbox(owneruser: owneruser), Container
     (color:

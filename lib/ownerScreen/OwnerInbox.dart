@@ -1,3 +1,4 @@
+import 'package:CarRentals/Details/OwnerBookingDetails.dart';
 import 'package:CarRentals/api_connection/LoggedInOwner.dart';
 import 'package:flutter/material.dart';
 import 'package:CarRentals/api_connection/BookingDetails.dart';
@@ -62,7 +63,13 @@ class OwnerInbox extends StatelessWidget {
               final booking = bookings[index];
               return InkWell(
                 onTap: () {
-
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => OwnerBookingDetails(booking: booking,
+                          owneruser: owneruser),
+                    ),
+                  );
                 },
               child: Card(
                 shape: RoundedRectangleBorder(

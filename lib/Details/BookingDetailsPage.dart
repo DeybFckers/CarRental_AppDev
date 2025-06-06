@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:CarRentals/api_connection/LoggedInUser.dart';
-import 'package:CarRentals/api_connection/rentalCancellation.dart';
+import 'package:CarRentals/api_connection/getRental.dart';
 import 'package:CarRentals/consts/ReuseableClass.dart';
 import 'package:CarRentals/successScreens/Cancel_success.dart';
 import 'package:flutter/material.dart';

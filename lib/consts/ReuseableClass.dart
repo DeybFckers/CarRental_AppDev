@@ -35,7 +35,11 @@ class AuthField extends StatelessWidget {
   }
 }
 
-Widget buildInfoBox({required String title, required String content}) {
+Widget buildInfoBox({
+  required String title,
+  required String content,
+  Widget? trailing,
+}) {
   return Container(
     width: double.infinity,
     margin: const EdgeInsets.only(top: 16),
@@ -58,9 +62,16 @@ Widget buildInfoBox({required String title, required String content}) {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title,
-            style:
-            const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            if (trailing != null) trailing,
+          ],
+        ),
         const SizedBox(height: 10),
         Text(
           content,
@@ -73,4 +84,5 @@ Widget buildInfoBox({required String title, required String content}) {
     ),
   );
 }
+
 

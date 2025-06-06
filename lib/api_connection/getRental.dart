@@ -9,7 +9,6 @@ class RentalCancel{
 
   RentalCancel({
 
-
     required this.customerID,
     required this.carID,
     required this.startDate,
