@@ -12,6 +12,8 @@ class BookingDetails {
   final double dailyRate;
   final int carId;
   final int customerID;
+  final String rentalStatus;
+  final double totalPrice;
 
   BookingDetails({
     required this.customerName,
@@ -26,24 +28,29 @@ class BookingDetails {
     required this.ownerName,
     required this.dailyRate,
     required this.carId,
-    required this.customerID
+    required this.customerID,
+    required this.rentalStatus,
+    required this.totalPrice
   });
 
   factory BookingDetails.fromJson(Map<String, dynamic> json) {
     return BookingDetails(
-      carId: int.parse(json['Car_ID']),
-      customerName: json['Customer_Name'],
-      brand: json['Brand'],
-      model: json['Model'],
-      plateNumber: json['PlateNumber'],
-      requestDate: json['RequestDate'],
-      preferredStartDate: json['PreferredStartDate'],
-      preferredEndDate: json['PreferredEndDate'],
-      requestStatus: json['RequestStatus'],
-      imageUrl: json['ImageURL'],
-      ownerName: json['Owner_Name'],
-      dailyRate: double.parse(json['DailyRate']),
-      customerID: int.parse(json['Customer_ID']),
+      totalPrice: json['TotalPrice'] == null ? 0.0 : double.parse(json['TotalPrice'].toString()),
+      carId: json['Car_ID'] == null ? 0 : int.parse(json['Car_ID'].toString()),
+      customerName: json['Customer_Name'] ?? '',
+      brand: json['Brand'] ?? '',
+      model: json['Model'] ?? '',
+      plateNumber: json['PlateNumber'] ?? '',
+      requestDate: json['RequestDate'] ?? '',
+      preferredStartDate: json['PreferredStartDate'] ?? '',
+      preferredEndDate: json['PreferredEndDate'] ?? '',
+      requestStatus: json['RequestStatus'] ?? '',
+      imageUrl: json['ImageURL'] ?? '',
+      ownerName: json['Owner_Name'] ?? '',
+      dailyRate: json['DailyRate'] == null ? 0.0 : double.parse(json['DailyRate'].toString()),
+      customerID: json['Customer_ID'] == null ? 0 : int.parse(json['Customer_ID'].toString()),
+      rentalStatus: json['RentalStatus'] ?? '',
     );
   }
+
 }
