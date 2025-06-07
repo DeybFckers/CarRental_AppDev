@@ -81,7 +81,8 @@
                                   style: const TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 const SizedBox(height: 6),
-                                Text('Review and Rating:', style: TextStyle(fontSize: 14)),
+                                Text('Review and Rating:', style: TextStyle
+                                  (fontSize: 15)),
                                 buildStars(int.parse(r['Rating'].toString())),
                                 if (r['Comment'] != null && r['Comment'].toString().trim().isNotEmpty)
                                   Padding(
@@ -94,7 +95,8 @@
                                 const SizedBox(height: 6),
                                 Text(
                                   'Reviewed on: ${r["ReviewDate"]}',
-                                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                                  style: const TextStyle(fontSize: 14, color:
+                                  Colors.grey),
                                 ),
                               ],
                             ),
