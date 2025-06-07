@@ -44,7 +44,7 @@ class NavigationController extends GetxController {
   late final screens = [
     HomeScreen(user: user),
     BookingStatusScreen(user: user),
-    //MessageScreen(user: user), // Pass user here
+    MessageScreen(user: user), // Pass user here
     ProfileScreen(user: user),
 
   ];

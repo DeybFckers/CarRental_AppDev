@@ -1,5 +1,6 @@
 import 'package:CarRentals/ownerScreen/OwnerInbox.dart';
 import 'package:CarRentals/ownerScreen/OwnerProfile.dart';
+import 'package:CarRentals/ownerScreen/OwnerMessages.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -44,9 +45,8 @@ class OwnerNavigationController extends GetxController{
 
   OwnerNavigationController(this.owneruser);
 
-  late final screens = [OwnerInbox(owneruser: owneruser), Container
-    (color:
-  Colors.purple), OwnerProfileScreen(owneruser: owneruser)
+  late final screens = [OwnerInbox(owneruser: owneruser), OwnerMessageScreen(owneruser: owneruser),
+  OwnerProfileScreen(owneruser: owneruser)
   ];
 }
 

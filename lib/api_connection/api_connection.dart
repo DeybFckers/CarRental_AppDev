@@ -37,5 +37,6 @@ class API
   static const getConversation = "$hostConnect/messages/getconversation.php";
   static const getMessage = "$hostConnect/messages/getmessages.php";
   static const sendMessage = "$hostConnect/messages/sendmessage.php";
+  static const createConversation = "$hostConnect/messages/createconversation.php";
 
 }

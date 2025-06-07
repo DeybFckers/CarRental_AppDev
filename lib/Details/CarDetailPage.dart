@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:CarRentals/Details/ConversationDetails.dart';
 import 'package:CarRentals/Details/ReviewDetails.dart';
 import 'package:CarRentals/successScreens/Booking_success.dart';
 import 'package:http/http.dart' as http;
@@ -11,6 +12,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:CarRentals/api_connection/bookingrequest.dart';
 import 'package:CarRentals/api_connection/LoggedInUser.dart';
+import 'package:CarRentals/api_connection/conversation.dart';
 
 class CarDetailPage extends StatefulWidget {
   final Car car;
@@ -182,8 +184,41 @@ class _CarDetailPageState extends State<CarDetailPage> {
                 ),
                 IconButton(
                   icon: Icon(Iconsax.message, color: Colors.white),
-                  onPressed: (){
+                  onPressed: () async {
+                    try {
+                      // Create or get existing conversation
+                      final response = await http.post(
+                        Uri.parse(API.createConversation),
+                        body: {
+                          'customer_id': widget.user.Customer_ID.toString(),
+                          'owner_id': widget.car.ownerId.toString(),
+                        },
+                      );
 
+                      if (response.statusCode == 200) {
+                        final responseData = jsonDecode(response.body);
+
+                        if (responseData['success'] == true || responseData['exists'] == true) {
+                          final conversation = Conversation(
+                            conversationId: responseData['conversation_id'].toString(),
+                            customerId: widget.user.Customer_ID,
+                            ownerId: widget.car.ownerId,
+                          );
+
+                          Get.to(() => ConversationDetailsScreen(
+                            conversation: conversation,
+                            user: widget.user,
+                            userType: 'customer',
+                          ));
+                        } else {
+                          throw Exception(responseData['error'] ?? 'Failed to create conversation');
+                        }
+                      } else {
+                        throw Exception('Failed with status code: ${response.statusCode}');
+                      }
+                    } catch (e) {
+                      Get.snackbar('Error', 'Could not start conversation: $e');
+                    }
                   },
                 )
               ],

@@ -25,4 +25,6 @@ class LoggedInOwner {
       json['Owner_Password'],
     );
   }
+
+  String get userType => 'owner';
 }

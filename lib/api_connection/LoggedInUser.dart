@@ -25,4 +25,6 @@ class LoggedInUser {
       json['Customer_Password'],
     );
   }
+
+  String get userType => 'customer';
 }

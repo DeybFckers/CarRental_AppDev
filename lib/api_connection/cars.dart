@@ -7,8 +7,10 @@ class Car {
   final double dailyRate;
   final String imageUrl;
   final int seatCapacity;
+  final int ownerId;
 
   Car({
+    required this.ownerId,
     required this.carId,
     required this.ownerName,
     required this.brand,
@@ -21,6 +23,7 @@ class Car {
 
   factory Car.fromJson(Map<String, dynamic> json) {
     return Car(
+      ownerId: int.parse(json['Owner_ID'].toString()),
       carId: int.parse(json['Car_ID'].toString()),
       brand: json['Brand'],
       model: json['Model'],
