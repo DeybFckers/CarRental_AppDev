@@ -31,6 +31,7 @@ class API
   //review
   static const submitReview ="$hostConnect/review/submit_review.php";
   static const checkReview = "$hostConnect/review/check_review.php";
+  static const getReview = "$hostConnect/review/get_review.php";
 
   //messages
   static const getConversation = "$hostConnect/messages/getconversation.php";

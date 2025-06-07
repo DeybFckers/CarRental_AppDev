@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:CarRentals/Details/ReviewDetails.dart';
 import 'package:CarRentals/successScreens/Booking_success.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
@@ -14,8 +15,8 @@ import 'package:CarRentals/api_connection/LoggedInUser.dart';
 class CarDetailPage extends StatefulWidget {
   final Car car;
   final LoggedInUser user;
-
-  const CarDetailPage({Key? key, required this.car, required this.user}) :  super(key: key);
+  const CarDetailPage({Key? key, required this.car, required this.user,}) :
+        super(key: key);
 
   @override
   State<CarDetailPage> createState() => _CarDetailPageState();
@@ -243,7 +244,29 @@ class _CarDetailPageState extends State<CarDetailPage> {
                   '• Pets are not allowed unless approved in advance\n'
                   '• Late return fee: ₱200/hour after the agreed time.',
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    const Icon(Icons.star, size:20, color: Colors.grey),
+                    SizedBox(width:6),
+                    Text(
+                        'Rating and Review',
+                        style: TextStyle(fontSize: 20, color: Colors.white,
+                        )
+                    ),
+                  ],
+                ),
+                IconButton(
+                  icon: Icon(Iconsax.arrow_right_1, color: Colors.white),
+                  onPressed: (){
+                    Get.off(() => ReviewDetails(user: widget.user, car: car));
+                  },
+                )
+              ],
+            ),
             Text('₱${car.dailyRate.toStringAsFixed(2)} per day',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
             //InlineDatePickButton
