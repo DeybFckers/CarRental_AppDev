@@ -1,5 +1,6 @@
 import 'package:CarRentals/Details/BookingDetailsPage.dart';
-import 'package:CarRentals/Details/BookingStatus.dart';
+import 'package:CarRentals/InboxStatus/BookingStatus.dart';
+import 'package:CarRentals/InboxStatus/CompleteReview.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -329,7 +330,7 @@ class CompletedTab extends StatelessWidget{
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => OnGoingStatus(booking: booking,
+                          builder: (_) => CompleteReview(booking: booking,
                               user: user),
                         ),
                       );

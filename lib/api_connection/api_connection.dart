@@ -28,6 +28,10 @@ class API
   //caravailable
   static const carAvailable = "$hostConnect/cars/carAvailability.php";
 
+  //review
+  static const submitReview ="$hostConnect/review/submit_review.php";
+  static const checkReview = "$hostConnect/review/check_review.php";
+
   //messages
   static const getConversation = "$hostConnect/messages/getconversation.php";
   static const getMessage = "$hostConnect/messages/getmessages.php";

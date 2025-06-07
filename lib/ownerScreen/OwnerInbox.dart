@@ -1,6 +1,6 @@
 import 'package:CarRentals/Details/OwnerBookingDetails.dart';
-import 'package:CarRentals/Details/OwnerStatus.dart';
-import 'package:CarRentals/Details/OwnerOnGoing.dart';
+import 'package:CarRentals/InboxStatus/OwnerStatus.dart';
+import 'package:CarRentals/InboxStatus/OwnerOnGoing.dart';
 import 'package:CarRentals/api_connection/LoggedInOwner.dart';
 import 'package:flutter/material.dart';
 import 'package:CarRentals/api_connection/BookingDetails.dart';
