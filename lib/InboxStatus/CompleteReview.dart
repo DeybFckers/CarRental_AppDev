@@ -108,6 +108,10 @@ class _CompleteReview extends State<CompleteReview> {
             buildInfoBox(title: 'Start Date', content: '${booking.preferredStartDate}'),
             buildInfoBox(title: 'End Date', content: '${booking.preferredEndDate}'),
             buildInfoBox(title: 'Request Status', content: '${booking.requestStatus}'),
+            buildInfoBox(
+                title: 'Payment Status',
+                content: '${booking.paymentStatus}'
+            ),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: hasReviewed
