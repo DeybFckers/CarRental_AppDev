@@ -23,6 +23,7 @@ class CarDetailPage extends StatefulWidget {
 }
 
 class _CarDetailPageState extends State<CarDetailPage> {
+  String? _selectedPaymentMethod;
   DateTime? preferredStartDate;
   DateTime? preferredEndDate;
   List<DateTime>blockedDates = [];
@@ -120,6 +121,7 @@ class _CarDetailPageState extends State<CarDetailPage> {
       carId: widget.car.carId,
       preferredStartDate: preferredStartDate!.toIso8601String().split('T')[0],
       preferredEndDate: preferredEndDate!.toIso8601String().split('T')[0],
+      paymentMethod: _selectedPaymentMethod!,
     );
     try{
       var res = await http.post(
@@ -323,13 +325,55 @@ class _CarDetailPageState extends State<CarDetailPage> {
                 )
               ],
             ),
-            SizedBox(height: 10,),
+            SizedBox(height: 20),
+            Text(
+              'Select Payment Method',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Column(
+              children: [
+                RadioListTile<String>(
+                  value: 'Gcash',
+                  groupValue: _selectedPaymentMethod,
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedPaymentMethod = value!;
+                    });
+                  },
+                  title: Text('Gcash'),
+                ),
+                RadioListTile<String>(
+                  value: 'Online Bank',
+                  groupValue: _selectedPaymentMethod,
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedPaymentMethod = value!;
+                    });
+                  },
+                  title: Text('Online Bank'),
+                ),
+                RadioListTile<String>(
+                  value: 'Personal Cash',
+                  groupValue: _selectedPaymentMethod,
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedPaymentMethod = value!;
+                    });
+                  },
+                  title: Text('Personal Cash'),
+                ),
+              ],
+            ),
             SizedBox(
               width: double.infinity,
               height: 60,
               child: ElevatedButton(
                 onPressed: (preferredStartDate != null &&
-                    preferredEndDate != null)
+                    preferredEndDate != null &&
+                    _selectedPaymentMethod != null)
                     ? () {
                   BookingRequestRecord();
                 }
