@@ -85,6 +85,10 @@ class _BookingDetailsPage extends State<OnGoingStatus>{
                 title: 'Request Status',
                 content: '${booking.requestStatus}'
             ),
+            buildInfoBox(
+                title: 'Payment Status',
+                content: '${booking.paymentStatus}'
+            ),
             SizedBox(height: 20),
           ],
         ),

@@ -119,6 +119,10 @@ class _OwnerOnGoingState extends State<OwnerOnGoing> {
                 title: 'Request Status',
                 content: '${booking.requestStatus}'
             ),
+            buildInfoBox(
+                title: 'Payment Status',
+                content: '${booking.paymentStatus}'
+            ),
             SizedBox(height: 20),
             ElevatedButton(
                 onPressed: () {

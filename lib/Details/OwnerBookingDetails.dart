@@ -157,6 +157,10 @@ class _OwnerBookingDetailsState extends State<OwnerBookingDetails> {
                 title: 'Request Status',
                 content: '${booking.requestStatus}'
             ),
+            buildInfoBox(
+                title: 'Payment Status',
+                content: '${booking.paymentStatus}'
+            ),
             SizedBox(height: 20),
             Row(
               children: [

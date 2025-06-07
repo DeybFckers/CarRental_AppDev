@@ -65,6 +65,10 @@ class OwnerStatus extends StatelessWidget {
                 title: 'Request Status',
                 content: '${booking.rentalStatus}'
             ),
+            buildInfoBox(
+                title: 'Payment Status',
+                content: '${booking.paymentStatus}'
+            ),
             SizedBox(height: 20),
           ],
         ),
