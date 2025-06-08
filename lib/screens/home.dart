@@ -8,20 +8,62 @@ import 'package:http/http.dart' as http;
 import 'package:CarRentals/api_connection/cars.dart';
 import 'package:CarRentals/api_connection/api_connection.dart';
 
-
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   final LoggedInUser user;
   const HomeScreen({super.key, required this.user});
 
-  Future<List<Car>> fetchCars() async {
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  List<Car> carList = [];
+  List<Car> filteredList = [];
+  TextEditingController searchController = TextEditingController();
+
+  Future<void> fetchCars() async {
     final response = await http.get(Uri.parse(API.getcars));
 
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
-      return data.map((car) => Car.fromJson(car)).toList();
+      final List<Car> cars = data.map((car) => Car.fromJson(car)).toList();
+      setState(() {
+        carList = cars;
+        filteredList = cars;
+      });
     } else {
       throw Exception('Failed to load cars');
     }
+  }
+
+  void filterSearch(String query) {
+    final results = carList.where((car) {
+      final brand = car.brand.toLowerCase();
+      final model = car.model.toLowerCase();
+      final plate = car.plateNumber.toLowerCase();
+      return brand.contains(query.toLowerCase()) ||
+          model.contains(query.toLowerCase()) ||
+          plate.contains(query.toLowerCase());
+    }).toList();
+
+    setState(() {
+      filteredList = results;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchCars();
+    searchController.addListener(() {
+      filterSearch(searchController.text);
+    });
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -49,7 +91,7 @@ class HomeScreen extends StatelessWidget {
                         children: [
                           TextSpan(text: 'Welcome to car rentals, \n'),
                           TextSpan(
-                            text: user.Customer_Name,
+                            text: widget.user.Customer_Name,
                             style: TextStyle(fontWeight: FontWeight.bold),
                           )
                         ],
@@ -61,18 +103,25 @@ class HomeScreen extends StatelessWidget {
                         alignment: Alignment.center,
                         child: Text(
                           'Find your Favourite Vehicle!',
-                          style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: Colors.white),
+                          style: TextStyle(
+                              fontSize: 40,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
                         ),
                       ),
                     ),
                     SizedBox(height: 15),
                     TextField(
+                      controller: searchController,
+                      style: TextStyle(color: Colors.black),
                       decoration: InputDecoration(
                         hintText: 'Search for a Vehicle',
-                        prefixIcon: Icon(Icons.search),
+                        hintStyle: TextStyle(color: Colors.grey),
+                        prefixIcon: Icon(Icons.search, color: Colors.black),
                         filled: true,
                         fillColor: Colors.white,
-                        contentPadding: EdgeInsets.symmetric(vertical: 15),
+                        contentPadding:
+                        EdgeInsets.symmetric(vertical: 15),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide.none,
@@ -103,70 +152,80 @@ class HomeScreen extends StatelessWidget {
                     .make();
               },
             ),
-            FutureBuilder<List<Car>>(
-              future: fetchCars(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                }
-
-                final cars = snapshot.data!;
-                return ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: cars.length,
-                  itemBuilder: (context, index) {
-                    final car = cars[index];
-                    return InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => CarDetailPage(car: car,
-                                user: user),
-                          ),
-                        );
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 20),
-                        child: Card(
-                          margin: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Image.network(
-                                car.imageUrl,
-                                width: double.infinity,
-                                height: 200,
-                                fit: BoxFit.cover,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  '${car.brand} ${car.model}',
-                                  style: TextStyle(fontWeight: FontWeight.bold,
-                                      fontSize: 20),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                                child: Text(
-                                  '₱${car.dailyRate.toStringAsFixed(2)} per day\nSeats: ${car.seatCapacity}',
-                                  style: TextStyle(fontSize: 18, color: Colors
-                                      .grey[700]),
-                                ),
-                              ),
-                            ],
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: GridView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: filteredList.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                  childAspectRatio: 0.75,
+                ),
+                itemBuilder: (context, index) {
+                  final car = filteredList[index];
+                  return InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => CarDetailPage(
+                            car: car,
+                            user: widget.user,
                           ),
                         ),
+                      );
+                    },
+                    child: Card(
+                      elevation: 4,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                    );
-                  },
-                );
-              },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+                            child: Image.network(
+                              car.imageUrl,
+                              width: double.infinity,
+                              height: 120,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              '${car.brand} ${car.model}',
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Text(
+                              '₱${car.dailyRate.toStringAsFixed(2)} / day',
+                              style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Text(
+                              'Seats: ${car.seatCapacity}',
+                              style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
+
           ],
         ),
       ),
