@@ -126,10 +126,12 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  if (selectedUserType == 'Customer') {
-                    loginUserNow();
-                  } else {
-                    loginOwnerNow();
+                  if (formKey.currentState!.validate()) {
+                    if (selectedUserType == 'Customer') {
+                      loginUserNow();
+                    } else {
+                      loginOwnerNow();
+                    }
                   }
                 },
                 style: ElevatedButton.styleFrom(

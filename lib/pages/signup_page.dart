@@ -105,7 +105,7 @@ class _SignupPageState extends State<SignupPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text ('Create your Account',
-              style: TextStyle(fontSize: 50,
+              style: TextStyle(fontSize: 45,
               fontWeight: FontWeight.bold,
 
                 ),

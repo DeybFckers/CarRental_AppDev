@@ -24,10 +24,25 @@ class AuthField extends StatelessWidget {
         hintText: hintText,
         prefix: icon !=null ? Icon(icon, color: Colors.grey[700]) : null,
       ),
-      validator: (value){
-        if(value!.isEmpty) {
+      validator: (value) {
+        if (value == null || value.isEmpty) {
           return "$hintText is missing!";
         }
+
+        if (hintText == "Email") {
+          final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+          if (!emailRegex.hasMatch(value)) {
+            return "Enter a valid email address";
+          }
+        }
+
+        if (hintText == "Contacts") {
+          final digitsOnly = RegExp(r'^\d+$');
+          if (!digitsOnly.hasMatch(value)) {
+            return "Enter your valid contact number";
+          }
+        }
+
         return null;
       },
       obscureText: isPasswordText,
