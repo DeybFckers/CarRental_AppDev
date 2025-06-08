@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:CarRentals/Details/ConversationDetails.dart';
 import 'package:CarRentals/Details/ReviewDetails.dart';
 import 'package:CarRentals/successScreens/Booking_success.dart';
 import 'package:http/http.dart' as http;
@@ -13,6 +12,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:CarRentals/api_connection/bookingrequest.dart';
 import 'package:CarRentals/api_connection/LoggedInUser.dart';
 import 'package:CarRentals/api_connection/conversation.dart';
+import 'package:CarRentals/Details/ConversationDetails.dart';
 
 class CarDetailPage extends StatefulWidget {
   final Car car;
@@ -203,6 +203,9 @@ class _CarDetailPageState extends State<CarDetailPage> {
                             conversationId: responseData['conversation_id'].toString(),
                             customerId: widget.user.Customer_ID,
                             ownerId: widget.car.ownerId,
+                            customerName: widget.user.Customer_Name,
+                            ownerName: widget.car.ownerName,
+                            title: '${widget.car.ownerName}',
                           );
 
                           Get.to(() => ConversationDetailsScreen(

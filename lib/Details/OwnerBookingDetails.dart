@@ -10,6 +10,9 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:CarRentals/consts/ReuseableClass.dart';
+import 'package:CarRentals/Details/ConversationDetails.dart';
+import 'package:CarRentals/api_connection/conversation.dart';
+
 
 
 class OwnerBookingDetails extends StatefulWidget {
@@ -132,8 +135,43 @@ class _OwnerBookingDetailsState extends State<OwnerBookingDetails> {
               content: '${booking.customerName}',
               trailing: IconButton(
                 icon: Icon(Iconsax.message, color: Colors.white),
-                onPressed: () {
-                  // message logic here
+                onPressed: () async {
+                  try {
+                    final response = await http.post(
+                      Uri.parse(API.createConversation),
+                      body: {
+                        'customer_id': widget.booking.customerID.toString(),
+                        'owner_id': widget.owneruser.Owner_ID.toString(),
+                      },
+                    );
+
+                    if (response.statusCode == 200) {
+                      final responseData = jsonDecode(response.body);
+
+                      if (responseData['success'] == true || responseData['exists'] == true) {
+                        final conversation = Conversation(
+                          conversationId: responseData['conversation_id'].toString(),
+                          customerId: widget.booking.customerID,
+                          ownerId: widget.owneruser.Owner_ID,
+                          customerName: widget.booking.customerName,
+                          ownerName: widget.owneruser.Owner_Name,
+                          title: '${widget.booking.customerName}',
+                        );
+
+                        Get.to(() => ConversationDetailsScreen(
+                          conversation: conversation,
+                          user: widget.owneruser,
+                          userType: 'owner',
+                        ));
+                      } else {
+                        throw Exception(responseData['error'] ?? 'Failed to create conversation');
+                      }
+                    } else {
+                      throw Exception('Failed with status code: ${response.statusCode}');
+                    }
+                  } catch (e) {
+                    Get.snackbar('Error', 'Could not start conversation: $e');
+                  }
                 },
               ),
             ),

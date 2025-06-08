@@ -59,7 +59,7 @@ class _OwnerMessageScreenState extends State<OwnerMessageScreen> {
   }
 
   String _generateConversationTitle(Map<String, dynamic> json) {
-    return 'Chat with Customer #${json['customer_id']}';
+    return '${json['customer_name']}';
   }
 
   @override
@@ -69,7 +69,7 @@ class _OwnerMessageScreenState extends State<OwnerMessageScreen> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          'Inbox - ${widget.owneruser.Owner_Name}',
+          '${widget.owneruser.Owner_Name}',
           style: TextStyle(color: Colors.white),
         ),
         iconTheme:  IconThemeData(color: Colors.white),

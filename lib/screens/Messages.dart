@@ -61,9 +61,9 @@ class _MessageScreenState extends State<MessageScreen> {
 
   String _generateConversationTitle(Map<String, dynamic> json) {
     if (widget.user.userType == 'customer') {
-      return 'Chat with Owner #${json['owner_id']}';
+      return '${json['owner_name']}';
     } else {
-      return 'Chat with Customer #${json['customer_id']}';
+      return '${json['customer_name']}';
     }
   }
 
