@@ -86,83 +86,88 @@ class _LoginPageState extends State<LoginPage> {
         padding: const EdgeInsets.all(15.0),
         child: Form(
           key: formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Login to your Account',
-                style: TextStyle(fontSize: 50,
-                fontWeight: FontWeight.bold
-                ),
-              ),
-              SizedBox(height: 20,),
-              AuthField(
-                  hintText: 'Email',
-                  controller: emailController,
-              ),
-              SizedBox(height: 20,),
-              AuthField(
-                  hintText: 'Password',
-                  controller: passwordController,
-                  isPasswordText: true,
-              ),
-              SizedBox(height: 20,),
-              DropdownButton<String>(
-                value: selectedUserType,
-                items: ['Customer', 'Owner'].map((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  if (value != null) {
-                    setState(() {
-                      selectedUserType = value;
-                    });
-                  }
-                },
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  if (formKey.currentState!.validate()) {
-                    if (selectedUserType == 'Customer') {
-                      loginUserNow();
-                    } else {
-                      loginOwnerNow();
-                    }
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.yellow[900],
-                    fixedSize: Size(410, 55)),
-                child: Text('Sign In',
-                    style: TextStyle(fontSize: 25, color: Colors.white)),
-              ),
-              SizedBox(height: 20,),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context, SignupPage.route());
-                },
-                child: RichText(
-                    text: TextSpan(
-                        text: ("Don\'t have an account? "),
-                        style: Theme.of(context).textTheme.titleMedium,
-                        children: [
-                          TextSpan(
-                              text: 'Sign Up',
-                              style:Theme.of(context).textTheme.titleMedium?.copyWith(
-                                color: Colors.yellow[900],
-                                fontWeight: FontWeight.bold,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 150),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Login to your Account',
+                    style: TextStyle(fontSize: 50,
+                    fontWeight: FontWeight.bold
+                    ),
+                  ),
+                  SizedBox(height: 20,),
+                  AuthField(
+                      hintText: 'Email',
+                      controller: emailController,
+                  ),
+                  SizedBox(height: 20,),
+                  AuthField(
+                      hintText: 'Password',
+                      controller: passwordController,
+                      isPasswordText: true,
+                  ),
+                  SizedBox(height: 20,),
+                  DropdownButton<String>(
+                    value: selectedUserType,
+                    items: ['Customer', 'Owner'].map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      if (value != null) {
+                        setState(() {
+                          selectedUserType = value;
+                        });
+                      }
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        if (selectedUserType == 'Customer') {
+                          loginUserNow();
+                        } else {
+                          loginOwnerNow();
+                        }
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.yellow[900],
+                        fixedSize: Size(410, 55)),
+                    child: Text('Sign In',
+                        style: TextStyle(fontSize: 25, color: Colors.white)),
+                  ),
+                  SizedBox(height: 20,),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context, SignupPage.route());
+                    },
+                    child: RichText(
+                        text: TextSpan(
+                            text: ("Don\'t have an account? "),
+                            style: Theme.of(context).textTheme.titleMedium,
+                            children: [
+                              TextSpan(
+                                  text: 'Sign Up',
+                                  style:Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    color: Colors.yellow[900],
+                                    fontWeight: FontWeight.bold,
+                                  )
                               )
-                          )
-                        ]
-                    )
-                ),
-              )
-            ],
+                            ]
+                        )
+                    ),
+                  )
+                ],
+              ),
+            ),
           ),
         ),
       ),

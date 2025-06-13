@@ -101,86 +101,91 @@ class _SignupPageState extends State<SignupPage> {
         padding: const EdgeInsets.all(15.0),
         child: Form(
           key: formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text ('Create your Account',
-              style: TextStyle(fontSize: 45,
-              fontWeight: FontWeight.bold,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 50),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text ('Create your Account',
+                  style: TextStyle(fontSize: 45,
+                  fontWeight: FontWeight.bold,
 
-                ),
-              ),
-              SizedBox(height: 20,),
-              AuthField(
-                hintText: 'Name',
-                controller: nameController,
-              ),
-              SizedBox(height: 20,),
-              AuthField(
-                hintText: 'Address',
-                controller: addressController,
-              ),
-              SizedBox(height: 20,),
-              AuthField(
-                hintText: 'Contacts',
-                controller: contactController,
-              ),
-              SizedBox(height: 20,),
-              AuthField(
-                hintText: 'Email',
-                controller: emailController,
-              ),
-              SizedBox(height: 20,),
-              AuthField(
-                hintText: 'Password',
-                controller: passwordController,
-                isPasswordText: true,
-              ),
-              SizedBox(height: 20,),
-          ElevatedButton(
-            onPressed: () {
-              if(formKey.currentState!.validate())
-                {
-                  //validate the email
-                  validateUserEmail();
+                    ),
+                  ),
+                  SizedBox(height: 20,),
+                  AuthField(
+                    hintText: 'Name',
+                    controller: nameController,
+                  ),
+                  SizedBox(height: 20,),
+                  AuthField(
+                    hintText: 'Address',
+                    controller: addressController,
+                  ),
+                  SizedBox(height: 20,),
+                  AuthField(
+                    hintText: 'Contacts',
+                    controller: contactController,
+                  ),
+                  SizedBox(height: 20,),
+                  AuthField(
+                    hintText: 'Email',
+                    controller: emailController,
+                  ),
+                  SizedBox(height: 20,),
+                  AuthField(
+                    hintText: 'Password',
+                    controller: passwordController,
+                    isPasswordText: true,
+                  ),
+                  SizedBox(height: 20,),
+              ElevatedButton(
+                onPressed: () {
+                  if(formKey.currentState!.validate())
+                    {
+                      //validate the email
+                      validateUserEmail();
 
-                }
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.yellow[900],
-              fixedSize: Size(410, 55),
-            ),
-            child: Text(
-              'Sign Up',
-              style: TextStyle(
-                fontSize: 25,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          SizedBox(height: 20,),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context, LoginPage.route());
+                    }
                 },
-                child: RichText(
-                    text: TextSpan(
-                      text: ("Already have an account? "),
-                      style: Theme.of(context).textTheme.titleMedium,
-                      children: [
-                        TextSpan(
-                          text: 'Sign In',
-                          style:Theme.of(context).textTheme.titleMedium?.copyWith(
-                            color: Colors.yellow[900],
-                            fontWeight: FontWeight.bold,
-                          )
-                        )
-                      ]
-                    )
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.yellow[900],
+                  fixedSize: Size(410, 55),
                 ),
-              )
-            ],
+                child: Text(
+                  'Sign Up',
+                  style: TextStyle(
+                    fontSize: 25,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              SizedBox(height: 20,),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context, LoginPage.route());
+                    },
+                    child: RichText(
+                        text: TextSpan(
+                          text: ("Already have an account? "),
+                          style: Theme.of(context).textTheme.titleMedium,
+                          children: [
+                            TextSpan(
+                              text: 'Sign In',
+                              style:Theme.of(context).textTheme.titleMedium?.copyWith(
+                                color: Colors.yellow[900],
+                                fontWeight: FontWeight.bold,
+                              )
+                            )
+                          ]
+                        )
+                    ),
+                  )
+                ],
+              ),
+            ),
           ),
         ),
       )

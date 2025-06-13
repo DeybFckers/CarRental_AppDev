@@ -37,9 +37,9 @@ class AuthField extends StatelessWidget {
         }
 
         if (hintText == "Contacts") {
-          final digitsOnly = RegExp(r'^\d+$');
+          final digitsOnly = RegExp(r'^\d{11}$');
           if (!digitsOnly.hasMatch(value)) {
-            return "Enter your valid contact number";
+            return "Contact number must be exactly 11 digits";
           }
         }
 
