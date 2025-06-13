@@ -1,6 +1,10 @@
 class API
 {
+<<<<<<< Updated upstream
   static const hostConnect = "http://CHANGE IP ADDRESS/carrentalbackend_php";
+=======
+  static const hostConnect = "http://172.20.10.2/carrentalbackend_php";
+>>>>>>> Stashed changes
   static const hostConnectUser = "$hostConnect/user";
 
   //signUp/login user
