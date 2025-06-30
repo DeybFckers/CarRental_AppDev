@@ -1,6 +1,7 @@
 import 'package:CarRentals/ownerScreen/OwnerInbox.dart';
 import 'package:CarRentals/ownerScreen/OwnerProfile.dart';
 import 'package:CarRentals/ownerScreen/OwnerMessages.dart';
+import 'package:CarRentals/ownerScreen/OwnerHome.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -25,6 +26,7 @@ class OwnerNavigation extends StatelessWidget {
             onDestinationSelected: (index) => controller.selectedIndex.value
             = index,
             destinations: [
+              NavigationDestination(icon: Icon(Iconsax.home), label: 'Home'),
               NavigationDestination(icon: Icon(Iconsax.direct_inbox), label:
               'Inbox'),
               NavigationDestination(icon: Icon(Iconsax.message), label: 'Mess'
@@ -45,8 +47,9 @@ class OwnerNavigationController extends GetxController{
 
   OwnerNavigationController(this.owneruser);
 
-  late final screens = [OwnerInbox(owneruser: owneruser), OwnerMessageScreen(owneruser: owneruser),
-  OwnerProfileScreen(owneruser: owneruser)
+  late final screens = [OwnerHome(owneruser: owneruser,),OwnerInbox(owneruser:
+  owneruser),
+    OwnerMessageScreen(owneruser: owneruser),OwnerProfileScreen(owneruser: owneruser)
   ];
 }
 

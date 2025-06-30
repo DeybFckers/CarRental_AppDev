@@ -146,7 +146,6 @@ class _SignupPageState extends State<SignupPage> {
                     {
                       //validate the email
                       validateUserEmail();
-
                     }
                 },
                 style: ElevatedButton.styleFrom(
