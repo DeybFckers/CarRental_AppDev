@@ -1,7 +1,7 @@
 class API
 {
 
-  static const hostConnect = "http://192.168.1.45/carrentalbackend_php";
+  static const hostConnect = "http://CHANGE IP ADDRESS/carrentalbackend_php";
 
   static const hostConnectUser = "$hostConnect/user";
 
