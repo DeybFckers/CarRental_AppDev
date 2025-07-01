@@ -127,6 +127,7 @@ class _SignupPageState extends State<SignupPage> {
                   AuthField(
                     hintText: 'Contacts',
                     controller: contactController,
+                    keyboardType: TextInputType.number,
                   ),
                   SizedBox(height: 20,),
                   AuthField(

@@ -7,6 +7,7 @@ class AuthField extends StatelessWidget {
   final TextEditingController controller;
   final bool isPasswordText;
   final IconData? icon;
+  final TextInputType keyboardType;
 
   const AuthField({
     super.key,
@@ -14,12 +15,15 @@ class AuthField extends StatelessWidget {
     required this.controller,
     this.isPasswordText = false,
     this.icon,
+    this.keyboardType = TextInputType.text
+
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      keyboardType: keyboardType,
       decoration: InputDecoration(
         hintText: hintText,
         prefix: icon !=null ? Icon(icon, color: Colors.grey[700]) : null,
