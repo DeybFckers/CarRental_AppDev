@@ -125,7 +125,8 @@ class _AddCarState extends State<AddCar> {
                 AuthField(hintText: 'Daily Rate', controller:
                 dailyrateController, keyboardType: TextInputType.number),
                 SizedBox(height: 20),
-                AuthField(hintText: 'Seat Capacity', controller: seatcapacityController),
+                AuthField(hintText: 'Seat Capacity', controller:
+                seatcapacityController, keyboardType: TextInputType.number),
                 SizedBox(height: 20),
                 Row(
                   children: [
