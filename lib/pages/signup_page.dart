@@ -26,6 +26,8 @@ class _SignupPageState extends State<SignupPage> {
   final contactController = TextEditingController();
   final addressController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  PasswordStrength? _passwordStrength;
+  bool _showPasswordInstructions = false;
 
   validateUserEmail()async
   {
@@ -94,6 +96,18 @@ class _SignupPageState extends State<SignupPage> {
     super.dispose();
   }
 
+  void initState(){
+    super.initState();
+    passwordController.addListener((){
+      final text = passwordController.text;
+      final strength = PasswordStrength.calculate(text: passwordController.text);
+      setState(() {
+        _passwordStrength = strength;
+        _showPasswordInstructions = text.isNotEmpty;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -139,7 +153,33 @@ class _SignupPageState extends State<SignupPage> {
                     hintText: 'Password',
                     controller: passwordController,
                     isPasswordText: true,
+
                   ),
+                  if (_showPasswordInstructions) ...[
+                    const SizedBox(height: 10),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: PasswordStrength.buildInstructionChecklist(passwordController.text),
+                    ),
+                  ],
+                  if (_passwordStrength != null) ... [
+                    const SizedBox(height:10),
+                    Row(
+                      children: [
+                        AnimatedContainer(
+                          duration: const Duration(milliseconds:300),
+                          height: 8,
+                          width: 300 * _passwordStrength!.widthPerc,
+                          decoration: BoxDecoration(
+                            color: _passwordStrength!.statusColor,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                        ),
+                        const SizedBox(width:8),
+                        _passwordStrength!.statusWidget ?? const SizedBox(),
+                      ],
+                    )
+                  ],
                   SizedBox(height: 20,),
               ElevatedButton(
                 onPressed: () {
